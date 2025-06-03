@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const sseClient = await experimental_createMCPClient({
       transport: {
         type: "sse",
-        url: "http://localhost:8787/sse",
+        url: "https://db-query-mcp-server.akram-ansari-c95.workers.dev/sse",
       },
     });
 
