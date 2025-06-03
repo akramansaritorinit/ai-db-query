@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const sseClient = await experimental_createMCPClient({
       transport: {
         type: "sse",
-        url: "https://my-mcp-server.akramansari1433.workers.dev/sse",
+        url: "http://localhost:8787/sse",
       },
     });
 
@@ -23,11 +23,11 @@ export async function POST(req: Request) {
       type === "chart"
         ? `You are an SQL query assistant specialized in generating data for charts. Follow these steps exactly in order:
 
-            1. FIRST call the getTablesInfo tool to retrieve all available tables and their schemas
+            1. FIRST call the getTablesInfoPostgres tool to retrieve all available tables and their schemas
             2. Analyze the table schemas to understand relationships and available columns
             3. Convert the user's request into proper SQL, focusing on getting data suitable for visualization
             4. Consider if JOINs are needed based on the relationships between tables
-            5. Execute the SQL query using the queryDatabase tool
+            5. Execute the SQL query using the queryDatabasePostgres tool
             6. If the query fails, fix any table or column name issues and retry once
             7. When the query succeeds, return a JSON object in this exact format:
                 {
@@ -44,11 +44,11 @@ export async function POST(req: Request) {
             IMPORTANT: Output only the JSON object, no markdown or additional text.`
         : `You are an SQL query assistant. Follow these steps exactly in order:
 
-            1. FIRST call the getTablesInfo tool to retrieve all available tables and their schemas
+            1. FIRST call the getTablesInfoPostgres tool to retrieve all available tables and their schemas
             2. Analyze the table schemas to understand relationships and available columns
             3. Convert the user's request into proper SQL, using the correct table and column names based on step 1
             4. Consider if JOINs are needed based on the relationships between tables
-            5. Execute the SQL query using the queryDatabase tool
+            5. Execute the SQL query using the queryDatabasePostgres tool
             6. If the query fails, fix any table or column name issues and retry once
             7. When the query succeeds, return a JSON object in this exact format:
               {
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
             IMPORTANT: Output only the JSON object, no markdown or additional text.`;
 
     const { text } = await generateText({
-      model: openai("gpt-4o"),
+      model: openai("o4-mini"),
       tools,
       prompt,
       system: systemPrompt,
