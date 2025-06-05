@@ -62,7 +62,7 @@ export async function POST(req: Request) {
             IMPORTANT: Output only the JSON object, no markdown or additional text.`;
 
     const { text } = await generateText({
-      model: openai("o4-mini"),
+      model: openai("gpt-4o-mini"),
       tools,
       prompt,
       system: systemPrompt,
