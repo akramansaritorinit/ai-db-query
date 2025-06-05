@@ -111,33 +111,40 @@ export default function Home() {
       value: Number(row[yAxisKey]) || 0,
     }));
 
+    // Calculate dynamic width based on number of data points
+    // Minimum 80px per bar to ensure x-axis labels are readable
+    const minWidth = Math.max(800, chartData.length * 80);
+
     return (
-      <ChartContainer
-        config={{
-          value: {
-            label: yAxisKey,
-            color: "#2563eb",
-          },
-        }}
-        className="h-[400px]"
-      >
-        <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <ChartTooltip
-            content={({ active, payload }) => (
-              <ChartTooltipContent active={active} payload={payload} label={xAxisKey} />
-            )}
-          />
-          <Bar dataKey="value" fill="#2563eb" />
-        </BarChart>
-      </ChartContainer>
+      <div className="overflow-x-auto">
+        <ChartContainer
+          config={{
+            value: {
+              label: yAxisKey,
+              color: "#2563eb",
+            },
+          }}
+          className="h-[400px]"
+          style={{ minWidth: `${minWidth}px` }}
+        >
+          <BarChart data={chartData} width={minWidth} height={400}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" interval={0} angle={-45} textAnchor="end" height={60} />
+            <YAxis />
+            <ChartTooltip
+              content={({ active, payload }) => (
+                <ChartTooltipContent active={active} payload={payload} label={xAxisKey} />
+              )}
+            />
+            <Bar dataKey="value" fill="#2563eb" />
+          </BarChart>
+        </ChartContainer>
+      </div>
     );
   };
 
   return (
-    <main className="container mx-auto p-4 max-w-4xl">
+    <main className="max-w-7xl mx-auto p-4">
       <Card className="mb-6">
         <CardHeader>
           <CardTitle>AI Database Query</CardTitle>
